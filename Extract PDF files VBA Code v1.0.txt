@@ -1,7 +1,7 @@
 Sub MailMergeToPdfBasic()                                                        ' Mark the start of the Subroutine (i.e. Macro) and name it "MailMergeToPdf"
 ' Macro modified by Rajnish Kapur
-' v1.0
-' Last Updated 2027-Jul-07
+' v2.0
+' Last Updated 2027-Jul-13
     Dim masterDoc As Document, singleDoc As Document, lastRecordNum As Long      ' Create variables ("Post-it Notes") for later use
     Dim FileName As String
     Dim FileNameWOExt As String
@@ -10,6 +10,7 @@ Sub MailMergeToPdfBasic()                                                       
     Dim strMemberEntityFolderDocs As String
     Dim strMemberEntityFolderPDFs As String
     
+    Dim strInvestingEntityType As String
     Dim strMemberEntityName As String
 
     Set masterDoc = ActiveDocument                                               ' Identify the ActiveDocument (foremost doc when Macro run) as "masterDoc"
@@ -18,7 +19,9 @@ Sub MailMergeToPdfBasic()                                                       
     FileNameWOExt = Left(FileName, InStr(FileName, ".") - 1)
 
     strCurrentPath = masterDoc.Path
-    
+
+strCurrentPath = "C:\Users\Rajnish Kapur\Downloads"
+
     masterDoc.MailMerge.DataSource.ActiveRecord = wdLastRecord                   ' jump to the last active record (active = ticked in edit recipients)
     lastRecordNum = masterDoc.MailMerge.DataSource.ActiveRecord                  ' retrieve the record number of the last active record so we know when to stop
 
@@ -32,17 +35,27 @@ Sub MailMergeToPdfBasic()                                                       
         
         Set singleDoc = ActiveDocument                                           ' Identify the ActiveDocument (foremost doc after running the MailMerge) as "singleDoc"
         
-        strMemberEntityName = masterDoc.MailMerge.DataSource.DataFields("member_first_name").Value & " " & _
-                              masterDoc.MailMerge.DataSource.DataFields("member_last_name").Value & " - " & _
-                              masterDoc.MailMerge.DataSource.DataFields("first_name_primary").Value & " " & _
-                              masterDoc.MailMerge.DataSource.DataFields("last_name_primary").Value
-                              
-        If masterDoc.MailMerge.DataSource.DataFields("invest_jointly").Value = "Yes" Then
-            strMemberEntityName = strMemberEntityName & " and JT"
-
-        End If
+        strInvestingEntityType = masterDoc.MailMerge.DataSource.DataFields("investing_entity_type").Value
         
-                
+        If strInvestingEntityType = "Resident Individual (Including Jointly)" Or strInvestingEntityType = "Non-Resident Individual (Including Jointly)" Then
+      
+            strMemberEntityName = masterDoc.MailMerge.DataSource.DataFields("member_first_name").Value & " " & _
+                                  masterDoc.MailMerge.DataSource.DataFields("member_last_name").Value & " - " & _
+                                  masterDoc.MailMerge.DataSource.DataFields("first_name_primary").Value & " " & _
+                                  masterDoc.MailMerge.DataSource.DataFields("last_name_primary").Value
+                                  
+            If masterDoc.MailMerge.DataSource.DataFields("invest_jointly").Value = "Yes" Then
+                strMemberEntityName = strMemberEntityName & " and JT"
+            End If
+       
+        ElseIf strInvestingEntityType = "Resident Entity (Ltd, Pvt, Ltd, LLP, Partnership, HUF)" Or strInvestingEntityType = "Non-Resident Entity (Ltd, Pvt, Ltd, LLP, Partnership, HUF)" Then
+        
+            strMemberEntityName = masterDoc.MailMerge.DataSource.DataFields("member_first_name").Value & " " & _
+                                  masterDoc.MailMerge.DataSource.DataFields("member_last_name").Value & " - " & _
+                                  masterDoc.MailMerge.DataSource.DataFields("name_of_entity").Value
+                                  
+        End If
+    
         strMemberEntityFolderDocs = strCurrentPath & Application.PathSeparator & "Docs" & Application.PathSeparator & strMemberEntityName
         
         If Len(Dir(strMemberEntityFolderDocs, vbDirectory)) = 0 Then
@@ -55,7 +68,7 @@ Sub MailMergeToPdfBasic()                                                       
             FileFormat:=wdFormatXMLDocument                                      ' Save "singleDoc" as a word docx with the details provided in the DocFolderPath and DocFileName fields in the MailMerge data
         
         strMemberEntityFolderPDFs = strCurrentPath & Application.PathSeparator & "PDFs" & Application.PathSeparator & strMemberEntityName
-        
+
         If Len(Dir(strMemberEntityFolderPDFs, vbDirectory)) = 0 Then
             MkDir (strMemberEntityFolderPDFs)
         End If
@@ -75,4 +88,3 @@ Sub MailMergeToPdfBasic()                                                       
 
     Loop                                                                         ' loop back to the Do start
 End Sub                                                                          ' Mark the end of the Subroutine
-
