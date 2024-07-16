@@ -1,7 +1,7 @@
 Sub MailMergeToPdfBasic()                                                        ' Mark the start of the Subroutine (i.e. Macro) and name it "MailMergeToPdf"
 ' Macro modified by Rajnish Kapur
 ' v3.3
-' Last Updated 2027-Jul-13
+' Last Updated 2027-Jul-15
     Dim masterDoc As Document, singleDoc As Document, lastRecordNum As Long      ' Create variables ("Post-it Notes") for later use
     Dim FileName As String
     Dim FileNameWOExt As String
