@@ -1,7 +1,7 @@
 Sub MailMergeToPdfBasic()                                                        ' Mark the start of the Subroutine (i.e. Macro) and name it "MailMergeToPdf"
 ' Macro modified by Rajnish Kapur
-' v3.4
-' Last Updated 2027-Jul-16
+' v3.5
+' Last Updated 2027-Jul-24
     Dim masterDoc As Document, singleDoc As Document, lastRecordNum As Long      ' Create variables ("Post-it Notes") for later use
     Dim FileName As String
     Dim FileNameWOExt As String
@@ -57,7 +57,7 @@ Sub MailMergeToPdfBasic()                                                       
                     strMemberEntityName = strMemberEntityName & " and JT"
                 End If
        
-            ElseIf strInvestingEntityType = "Resident Entity (Ltd, Pvt, Ltd, LLP, Partnership, HUF)" Or strInvestingEntityType = "Non-Resident Entity (Ltd, Pvt, Ltd, LLP, Partnership, HUF)" Then
+            ElseIf strInvestingEntityType = "Resident Entity (Ltd, Pvt, Ltd, LLP, Partnership, HUF)" Or strInvestingEntityType = "Non-Resident Entity (LLC, Inc, Ltd, LLP etc.)" Then
         
                 strMemberEntityName = masterDoc.MailMerge.DataSource.DataFields("member_first_name").Value & " " & _
                                   masterDoc.MailMerge.DataSource.DataFields("member_last_name").Value & " - " & _
@@ -105,19 +105,4 @@ Sub MailMergeToPdfBasic()                                                       
 
     Loop                                                                         ' loop back to the Do start
 End Sub                                                                          ' Mark the end of the Subroutine
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
