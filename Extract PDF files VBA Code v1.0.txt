@@ -1,7 +1,7 @@
 Sub MailMergeToPdfBasic()                                                        ' Mark the start of the Subroutine (i.e. Macro) and name it "MailMergeToPdf"
 ' Macro modified by Rajnish Kapur
-' v3.5
-' Last Updated 2027-Jul-24
+' v3.6
+' Last Updated 2027-Jul-29
     Dim masterDoc As Document, singleDoc As Document, lastRecordNum As Long      ' Create variables ("Post-it Notes") for later use
     Dim FileName As String
     Dim FileNameWOExt As String
@@ -70,17 +70,6 @@ Sub MailMergeToPdfBasic()                                                       
                FileNameWOExt = Right(FileNameWOExt, Len(FileNameWOExt) - 4)
             End If
     
-            strMemberEntityFolderDocs = strCurrentPath & Application.PathSeparator & "Docs" & Application.PathSeparator & strMemberEntityName
-        
-            If Len(Dir(strMemberEntityFolderDocs, vbDirectory)) = 0 Then
-                MkDir (strMemberEntityFolderDocs)
-            End If
-        
-            singleDoc.SaveAs2 _
-                FileName:=strMemberEntityFolderDocs & Application.PathSeparator & FileNameWOExt & _
-                        strMemberEntityName & ".docx", _
-                FileFormat:=wdFormatXMLDocument                                      ' Save "singleDoc" as a word docx with the details provided in the DocFolderPath and DocFileName fields in the MailMerge data
-        
             strMemberEntityFolderPDFs = strCurrentPath & Application.PathSeparator & "PDFs" & Application.PathSeparator & strMemberEntityName
 
             If Len(Dir(strMemberEntityFolderPDFs, vbDirectory)) = 0 Then
