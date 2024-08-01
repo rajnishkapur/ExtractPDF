@@ -1,7 +1,7 @@
 Sub MailMergeToPdfBasic()                                                        ' Mark the start of the Subroutine (i.e. Macro) and name it "MailMergeToPdf"
 ' Macro modified by Rajnish Kapur
-' v3.6
-' Last Updated 2027-Jul-29
+' v3.7
+' Last Updated 2027-Aug-01
     Dim masterDoc As Document, singleDoc As Document, lastRecordNum As Long      ' Create variables ("Post-it Notes") for later use
     Dim FileName As String
     Dim FileNameWOExt As String
@@ -22,7 +22,7 @@ Sub MailMergeToPdfBasic()                                                       
 
     strCurrentPath = masterDoc.Path
 
-    strCurrentPath = "C:\Users\Rajnish Kapur\Downloads"
+    strCurrentPath = "C:\Users\" & Environ("UserName") & "\Downloads"
 
     masterDoc.MailMerge.DataSource.ActiveRecord = wdLastRecord                   ' jump to the last active record (active = ticked in edit recipients)
     lastRecordNum = masterDoc.MailMerge.DataSource.ActiveRecord                  ' retrieve the record number of the last active record so we know when to stop
@@ -75,7 +75,7 @@ Sub MailMergeToPdfBasic()                                                       
             If Len(Dir(strMemberEntityFolderPDFs, vbDirectory)) = 0 Then
                 MkDir (strMemberEntityFolderPDFs)
             End If
-        
+       
           
             singleDoc.ExportAsFixedFormat _
                 OutputFileName:=strMemberEntityFolderPDFs & Application.PathSeparator & FileNameWOExt & _
@@ -94,4 +94,3 @@ Sub MailMergeToPdfBasic()                                                       
 
     Loop                                                                         ' loop back to the Do start
 End Sub                                                                          ' Mark the end of the Subroutine
-
